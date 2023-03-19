@@ -1,10 +1,127 @@
 <script setup>
-import { RouterLink, RouterView } from 'vue-router'
+import {h, defineComponent, ref, onMounted} from "vue";
+import {RouterLink, RouterView} from 'vue-router'
+import {NIcon} from "naive-ui";
+import {
+  BookOutline as BookIcon,
+  PersonOutline as PersonIcon,
+  WineOutline as WineIcon
+} from "@vicons/ionicons5";
+
+function renderIcon(icon) {
+  return () => h(NIcon, null, {default: () => h(icon)});
+}
+
+const menuOptions = [
+  {
+    label: "且听风吟",
+    key: "hear-the-wind-sing",
+    icon: renderIcon(BookIcon)
+  },
+  {
+    label: "1973年的弹珠玩具",
+    key: "pinball-1973",
+    icon: renderIcon(BookIcon),
+    disabled: true,
+    children: [
+      {
+        label: "鼠",
+        key: "rat"
+      }
+    ]
+  },
+  {
+    label: "寻羊冒险记",
+    key: "a-wild-sheep-chase",
+    disabled: true,
+    icon: renderIcon(BookIcon)
+  },
+  {
+    label: "舞，舞，舞",
+    key: "dance-dance-dance",
+    icon: renderIcon(BookIcon),
+    children: [
+      {
+        type: "group",
+        label: "人物",
+        key: "people",
+        children: [
+          {
+            label: "叙事者",
+            key: "narrator",
+            icon: renderIcon(PersonIcon)
+          },
+          {
+            label: "羊男",
+            key: "sheep-man",
+            icon: renderIcon(PersonIcon)
+          }
+        ]
+      },
+      {
+        label: "饮品",
+        key: "beverage",
+        icon: renderIcon(WineIcon),
+        children: [
+          {
+            label: "威士忌",
+            key: "whisky"
+          }
+        ]
+      },
+      {
+        label: "食物",
+        key: "food",
+        children: [
+          {
+            label: "三明治",
+            key: "sandwich"
+          }
+        ]
+      },
+      {
+        label: "过去增多，未来减少",
+        key: "the-past-increases-the-future-recedes"
+      }
+    ]
+  }
+];
+
+function autoChangeRightContentWidth(collapsed) {
+  document.getElementById("right-content").style.width = (collapsed ? window.innerWidth - 64 :
+      window.innerWidth - 240) + 'px';
+}
+
+onMounted(() => {
+  document.getElementById("left-menu").style.height = window.innerHeight + 'px'
+  document.getElementById("right-content").style.width = window.innerWidth - 240 + 'px'
+  window.onresize = () => {
+    document.getElementById("left-menu").style.height = window.innerHeight + 'px'
+    autoChangeRightContentWidth()
+  }
+})
+
 </script>
 
 <template>
-  <RouterView />
+  <div class="app-view">
+    <n-space vertical>
+      <n-layout position="absolute" has-sider>
+        <n-layout-sider id="left-menu" bordered show-trigger collapse-mode="width" :collapsed-width="64" :width="240"
+                        :native-scrollbar="false" :on-update:collapsed="autoChangeRightContentWidth">
+          <n-menu :collapsed-width="64" :collapsed-icon-size="22" :options="menuOptions"/>
+        </n-layout-sider>
+        <n-layout-content id="right-content" content-style="padding: 24px;" :native-scrollbar="false">
+          MyBlogCMDB
+        </n-layout-content>
+      </n-layout>
+    </n-space>
+  </div>
 </template>
 
 <style scoped>
+.app-view {
+  width: 100%;
+  height: 100%;
+}
 </style>
