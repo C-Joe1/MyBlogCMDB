@@ -10,7 +10,8 @@ import {
   CalendarSettings20Filled,
   TextBoxSettings24Filled,
   AppFolder24Filled,
-  TableLink24Filled
+  TableLink24Filled,
+  CalendarInfo16Filled
 } from "@vicons/fluent";
 import {SafetyCertificateFilled, GitlabFilled} from "@vicons/antd";
 import {UserCog, GitAlt} from "@vicons/fa";
@@ -21,8 +22,20 @@ function renderIcon(icon) {
   return () => h(NIcon, null, {default: () => h(icon)});
 }
 
-function renderRouteLink() {
-  return undefined
+function renderRouteLink(path, params, label) {
+  return () =>
+      h(
+          RouterLink,
+          {
+            to: {
+              path: path,
+              params: params,
+            }
+          },
+          {
+            default: () => label
+          }
+      )
 }
 
 const menuOptions = [
@@ -32,29 +45,22 @@ const menuOptions = [
     icon: renderIcon(ContentView32Filled),
     children: [
       {
-        label: (name, params, label) => h(RouterLink, {
-          to: {
-            name: "/",
-            params: {},
-          },
-        }, {
-          default: () => label
-        }),
+        label: renderRouteLink("/overview/permission", {}, "权限"),
         key: "permission-overview",
         icon: renderIcon(UserCog)
       },
       {
-        label: "机器",
+        label: renderRouteLink("/overview/machine", {}, "机器"),
         key: "machine-overview",
         icon: renderIcon(Server),
       },
       {
-        label: "业务概念",
+        label: renderRouteLink("/overview/concept", {}, "业务概念"),
         key: "concept-overview",
         icon: renderIcon(TextBulletListSquare24Filled),
       },
       {
-        label: "存储库与配置",
+        label: renderRouteLink("/overview/repo-config", {}, "存储库与配置"),
         key: "repo-config-overview",
         icon: renderIcon(TextBoxSettings24Filled),
       },
@@ -66,12 +72,12 @@ const menuOptions = [
     icon: renderIcon(CalendarSettings20Filled),
     children: [
       {
-        label: "成员组",
+        label: renderRouteLink("/permission-control/group", {}, "成员组"),
         key: "group-management",
         icon: renderIcon(People32Filled),
       },
       {
-        label: "成员",
+        label: renderRouteLink("/permission-control/member", {}, "成员"),
         key: "member-management",
         icon: renderIcon(Person48Filled),
       },
@@ -83,22 +89,22 @@ const menuOptions = [
     icon: renderIcon(TextBulletListSquare24Filled),
     children: [
       {
-        label: "机器",
+        label: renderRouteLink("/business-concept/machine", {}, "机器"),
         key: "machine",
         icon: renderIcon(Server),
       },
       {
-        label: "群组",
+        label: renderRouteLink("/business-concept/group", {}, "群组"),
         key: "group",
         icon: renderIcon(AppFolder24Filled),
       },
       {
-        label: "安全组",
-        key: "safely-group",
+        label: renderRouteLink("/business-concept/security-group", {}, "安全组"),
+        key: "security-group",
         icon: renderIcon(SafetyCertificateFilled),
       },
       {
-        label: "资源池",
+        label: renderRouteLink("/business-concept/resource-pool", {}, "资源池"),
         key: "resource-pool",
         icon: renderIcon(TableLink24Filled),
       },
@@ -110,21 +116,26 @@ const menuOptions = [
     icon: renderIcon(TextBoxSettings24Filled),
     children: [
       {
-        label: "存储库",
+        label: renderRouteLink("/config/repo", {}, "存储库"),
         key: "repo",
         icon: renderIcon(GitlabFilled),
       },
       {
-        label: "版本控制",
+        label: renderRouteLink("/config/version-control", {}, "版本控制"),
         key: "version-control",
         icon: renderIcon(GitAlt),
       }
     ]
   },
   {
-    label: "审计",
+    label: renderRouteLink("/audit", {}, "审计"),
     key: "audit",
     icon: renderIcon(InsertChartFilled),
+  },
+  {
+    label: renderRouteLink("/about", {}, "关于"),
+    key: "about",
+    icon: renderIcon(CalendarInfo16Filled),
   }
 ];
 
@@ -160,8 +171,7 @@ onMounted(() => {
                     @update:value="handleMenuItemClicked"/>
           </n-layout-sider>
           <n-layout-content id="right-content" content-style="padding: 24px;" :native-scrollbar="false">
-            MyBlogCMDB
-            <router-view style="width: 100%; height: 100%;"/>
+            <router-view style="width: 100%; height: 100%;"></router-view>
           </n-layout-content>
         </n-layout>
       </n-space>
