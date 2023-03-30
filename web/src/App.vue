@@ -1,5 +1,5 @@
 <script setup>
-import {h, onMounted} from "vue";
+import {h, onMounted, ref} from "vue";
 import {RouterLink, RouterView} from 'vue-router'
 import {NIcon, darkTheme} from "naive-ui";
 import {
@@ -149,12 +149,32 @@ function handleMenuItemClicked(key, item) {
   console.log(item)
 }
 
+//media获取系统主题
+let whichThemeWithSystem = window.matchMedia('(prefers-color-scheme: dark)');
+
+//初始化 dark mode 常量，matches上方常量，实现加载页面后跟随系统主题
+let useDarkTheme = ref(whichThemeWithSystem.matches);
+
 onMounted(() => {
   document.getElementById("left-menu").style.height = window.innerHeight + 'px'
   document.getElementById("right-content").style.width = window.innerWidth - 240 + 'px'
+
   window.onresize = () => {
     document.getElementById("left-menu").style.height = window.innerHeight + 'px'
     autoChangeRightContentWidth()
+  }
+
+  //call back切换页面主题
+  let systemThemeCallback = (e) => {
+    let prefersDarkMode = e.matches;
+    useDarkTheme.value = !!prefersDarkMode;
+  };
+
+  //监听系统主题切换
+  if (typeof whichThemeWithSystem.addEventListener === 'function') {
+    whichThemeWithSystem.addEventListener('change', systemThemeCallback);
+  } else if (typeof whichThemeWithSystem.addListener === 'function') {
+    whichThemeWithSystem.addListener(systemThemeCallback);
   }
 })
 
@@ -162,7 +182,7 @@ onMounted(() => {
 
 <template>
   <div class="app-view">
-    <n-config-provider :theme="darkTheme">
+    <n-config-provider :theme="useDarkTheme ? darkTheme : null">
       <n-space vertical>
         <n-layout position="absolute" has-sider>
           <n-layout-sider id="left-menu" bordered show-trigger collapse-mode="width" :collapsed-width="64" :width="240"
