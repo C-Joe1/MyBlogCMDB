@@ -6,11 +6,11 @@
     <div class="welcome-text">欢迎使用 MyBlogCMDB</div>
     <div class="version-text">v1.0.0</div>
     <div class="left-img">
-      <img src="../assets/images/Web%20Developer_Monochromatic.svg"
+      <img src="../../assets/images/Web%20Developer_Monochromatic.svg"
            alt="" style="width: 100%; height: 100%; ">
     </div>
     <div class="right-img">
-      <img src="../assets/images/Code%20Development%20_Monochromatic.svg"
+      <img src="../../assets/images/Code%20Development%20_Monochromatic.svg"
            alt="" style="width: 100%; height: 100%">
     </div>
   </div>
@@ -18,13 +18,12 @@
 
 <style scoped>
 .home-view {
+  height: 93.5vh !important;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   align-content: center;
-  width: 100%;
-  height: 93vh !important;
 }
 
 .welcome-text {

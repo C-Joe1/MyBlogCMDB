@@ -1,7 +1,7 @@
 <template>
   <n-layout>
     <div class="about-view">
-      About Page.
+      This is Forget Pwd View.
     </div>
   </n-layout>
 </template>
@@ -10,7 +10,7 @@
 import {onMounted} from 'vue';
 
 onMounted(() => {
-  document.title = '关于 MyBlogCMDB';
+  document.title = '忘记密码';
 })
 
 </script>
